@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>autoGMS — Service Requirements</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #1a1a1a; }
+.header { background: linear-gradient(135deg, #0066FF, #0044CC); color: white; padding: 40px 20px; text-align: center; }
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+.header p { opacity: 0.9; font-size: 15px; max-width: 600px; margin: 0 auto; }
+.container { max-width: 800px; margin: 0 auto; padding: 20px; }
+.contact-section { background: white; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.contact-section h2 { font-size: 18px; margin-bottom: 16px; color: #0066FF; }
+.contact-section input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; margin-bottom: 12px; }
+.contact-section input:focus { outline: none; border-color: #0066FF; }
+.section { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.section h3 { font-size: 16px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #f0f0f0; cursor: pointer; user-select: none; }
+.section h3:hover { color: #0066FF; }
+.section h3::before { content: '▸ '; color: #999; }
+.section h3.open::before { content: '▾ '; color: #0066FF; }
+.items { display: none; }
+.items.show { display: block; }
+.item { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #f8f8f8; }
+.item:last-child { border-bottom: none; }
+.item input[type=checkbox] { width: 20px; height: 20px; margin-right: 12px; accent-color: #0066FF; cursor: pointer; flex-shrink: 0; }
+.item label { font-size: 14px; cursor: pointer; flex: 1; }
+.counter { position: fixed; bottom: 20px; right: 20px; background: #0066FF; color: white; padding: 12px 20px; border-radius: 50px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,102,255,0.4); z-index: 100; font-size: 15px; }
+.submit-area { text-align: center; padding: 30px 0; }
+.submit-btn { background: #0066FF; color: white; border: none; padding: 16px 48px; font-size: 17px; font-weight: 600; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,102,255,0.3); }
+.submit-btn:hover { background: #0055DD; }
+.select-all { font-size: 12px; color: #0066FF; cursor: pointer; float: right; margin-top: 2px; }
+.result-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: center; }
+.result-modal.show { display: flex; }
+.result-box { background: white; border-radius: 16px; padding: 30px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+.result-box h2 { margin-bottom: 16px; }
+.result-box pre { background: #f5f5f5; padding: 16px; border-radius: 8px; white-space: pre-wrap; font-size: 13px; }
+.copy-btn { background: #0066FF; color: white; border: none; padding: 10px 24px; border-radius: 8px; cursor: pointer; margin-top: 12px; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="header">
+<h1>autoGMS</h1>
+<p>Tick all the services your garage offers or needs. This helps us tailor the system to your exact workflow.</p>
+</div>
+<div class="container">
+<div class="contact-section">
+<h2>📋 Your Details</h2>
+<input type="text" id="garageName" placeholder="Garage Name *">
+<input type="text" id="contactName" placeholder="Contact Name *">
+<input type="text" id="phone" placeholder="Phone / WhatsApp *">
+<input type="email" id="email" placeholder="Email (optional)">
+</div>
+<div class="section"><h3 onclick="toggle(this)" id="s0">🔧 Body Damage & Panel Repair <span class="select-all" onclick="event.stopPropagation();selectAll('g0',this)">select all</span></h3><div class="items" id="g0">
+<div class="item"><input type="checkbox" id="c0_0" onchange="updateCount()"><label for="c0_0">Body damage inspection & assessment</label></div>
+<div class="item"><input type="checkbox" id="c0_1" onchange="updateCount()"><label for="c0_1">Accident damage assessment</label></div>
+<div class="item"><input type="checkbox" id="c0_2" onchange="updateCount()"><label for="c0_2">Panel repair (minor dent)</label></div>
+<div class="item"><input type="checkbox" id="c0_3" onchange="updateCount()"><label for="c0_3">Panel repair (major dent)</label></div>
+<div class="item"><input type="checkbox" id="c0_4" onchange="updateCount()"><label for="c0_4">Panel straightening</label></div>
+<div class="item"><input type="checkbox" id="c0_5" onchange="updateCount()"><label for="c0_5">Panel reshaping</label></div>
+<div class="item"><input type="checkbox" id="c0_6" onchange="updateCount()"><label for="c0_6">Body filler work</label></div>
+<div class="item"><input type="checkbox" id="c0_7" onchange="updateCount()"><label for="c0_7">Structural body repair</label></div>
+<div class="item"><input type="checkbox" id="c0_8" onchange="updateCount()"><label for="c0_8">Chassis alignment check</label></div>
+<div class="item"><input type="checkbox" id="c0_9" onchange="updateCount()"><label for="c0_9">Chassis straightening (bench)</label></div>
+<div class="item"><input type="checkbox" id="c0_10" onchange="updateCount()"><label for="c0_10">Underbody damage repair</label></div>
+<div class="item"><input type="checkbox" id="c0_11" onchange="updateCount()"><label for="c0_11">Rust repair (localised)</label></div>
+<div class="item"><input type="checkbox" id="c0_12" onchange="updateCount()"><label for="c0_12">Rust repair (full panel)</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s1">🔧 Dent Repair (PDR) <span class="select-all" onclick="event.stopPropagation();selectAll('g1',this)">select all</span></h3><div class="items" id="g1">
+<div class="item"><input type="checkbox" id="c1_0" onchange="updateCount()"><label for="c1_0">Paintless dent removal – small dent</label></div>
+<div class="item"><input type="checkbox" id="c1_1" onchange="updateCount()"><label for="c1_1">Paintless dent removal – medium dent</label></div>
+<div class="item"><input type="checkbox" id="c1_2" onchange="updateCount()"><label for="c1_2">Paintless dent removal – large dent</label></div>
+<div class="item"><input type="checkbox" id="c1_3" onchange="updateCount()"><label for="c1_3">Hail damage repair</label></div>
+<div class="item"><input type="checkbox" id="c1_4" onchange="updateCount()"><label for="c1_4">Door ding repair</label></div>
+<div class="item"><input type="checkbox" id="c1_5" onchange="updateCount()"><label for="c1_5">Crease dent repair</label></div>
+<div class="item"><input type="checkbox" id="c1_6" onchange="updateCount()"><label for="c1_6">Access panel removal & refit (PDR)</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s2">🔧 Panel Replacement & Fitment <span class="select-all" onclick="event.stopPropagation();selectAll('g2',this)">select all</span></h3><div class="items" id="g2">
+<div class="item"><input type="checkbox" id="c2_0" onchange="updateCount()"><label for="c2_0">Front bumper replacement</label></div>
+<div class="item"><input type="checkbox" id="c2_1" onchange="updateCount()"><label for="c2_1">Rear bumper replacement</label></div>
+<div class="item"><input type="checkbox" id="c2_2" onchange="updateCount()"><label for="c2_2">Fender replacement</label></div>
+<div class="item"><input type="checkbox" id="c2_3" onchange="updateCount()"><label for="c2_3">Door shell replacement</label></div>
+<div class="item"><input type="checkbox" id="c2_4" onchange="updateCount()"><label for="c2_4">Bonnet / hood replacement</label></div>
+<div class="item"><input type="checkbox" id="c2_5" onchange="updateCount()"><label for="c2_5">Boot / trunk lid replacement</label></div>
+<div class="item"><input type="checkbox" id="c2_6" onchange="updateCount()"><label for="c2_6">Quarter panel replacement</label></div>
+<div class="item"><input type="checkbox" id="c2_7" onchange="updateCount()"><label for="c2_7">Roof panel replacement</label></div>
+<div class="item"><input type="checkbox" id="c2_8" onchange="updateCount()"><label for="c2_8">Side skirt replacement</label></div>
+<div class="item"><input type="checkbox" id="c2_9" onchange="updateCount()"><label for="c2_9">Grille replacement</label></div>
+<div class="item"><input type="checkbox" id="c2_10" onchange="updateCount()"><label for="c2_10">Mirror housing replacement</label></div>
+<div class="item"><input type="checkbox" id="c2_11" onchange="updateCount()"><label for="c2_11">Panel alignment & gap correction</label></div>
+<div class="item"><input type="checkbox" id="c2_12" onchange="updateCount()"><label for="c2_12">OEM panel fitment</label></div>
+<div class="item"><input type="checkbox" id="c2_13" onchange="updateCount()"><label for="c2_13">Aftermarket panel fitment</label></div>
+<div class="item"><input type="checkbox" id="c2_14" onchange="updateCount()"><label for="c2_14">Carbon fibre panel fitment</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s3">🔧 Full Painting Services <span class="select-all" onclick="event.stopPropagation();selectAll('g3',this)">select all</span></h3><div class="items" id="g3">
+<div class="item"><input type="checkbox" id="c3_0" onchange="updateCount()"><label for="c3_0">Full body respray</label></div>
+<div class="item"><input type="checkbox" id="c3_1" onchange="updateCount()"><label for="c3_1">Exterior respray only</label></div>
+<div class="item"><input type="checkbox" id="c3_2" onchange="updateCount()"><label for="c3_2">Colour change (external)</label></div>
+<div class="item"><input type="checkbox" id="c3_3" onchange="updateCount()"><label for="c3_3">Colour change (full incl. jambs)</label></div>
+<div class="item"><input type="checkbox" id="c3_4" onchange="updateCount()"><label for="c3_4">Factory colour repaint</label></div>
+<div class="item"><input type="checkbox" id="c3_5" onchange="updateCount()"><label for="c3_5">Custom colour repaint</label></div>
+<div class="item"><input type="checkbox" id="c3_6" onchange="updateCount()"><label for="c3_6">Candy paint application</label></div>
+<div class="item"><input type="checkbox" id="c3_7" onchange="updateCount()"><label for="c3_7">Matte paint finish</label></div>
+<div class="item"><input type="checkbox" id="c3_8" onchange="updateCount()"><label for="c3_8">Satin paint finish</label></div>
+<div class="item"><input type="checkbox" id="c3_9" onchange="updateCount()"><label for="c3_9">Pearlescent paint finish</label></div>
+<div class="item"><input type="checkbox" id="c3_10" onchange="updateCount()"><label for="c3_10">Metallic paint finish</label></div>
+<div class="item"><input type="checkbox" id="c3_11" onchange="updateCount()"><label for="c3_11">Two-tone paint job</label></div>
+<div class="item"><input type="checkbox" id="c3_12" onchange="updateCount()"><label for="c3_12">Racing livery paint</label></div>
+<div class="item"><input type="checkbox" id="c3_13" onchange="updateCount()"><label for="c3_13">OEM paint matching</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s4">🔧 Panel Painting (Per Panel) <span class="select-all" onclick="event.stopPropagation();selectAll('g4',this)">select all</span></h3><div class="items" id="g4">
+<div class="item"><input type="checkbox" id="c4_0" onchange="updateCount()"><label for="c4_0">Front bumper paint</label></div>
+<div class="item"><input type="checkbox" id="c4_1" onchange="updateCount()"><label for="c4_1">Rear bumper paint</label></div>
+<div class="item"><input type="checkbox" id="c4_2" onchange="updateCount()"><label for="c4_2">Fender paint</label></div>
+<div class="item"><input type="checkbox" id="c4_3" onchange="updateCount()"><label for="c4_3">Door paint</label></div>
+<div class="item"><input type="checkbox" id="c4_4" onchange="updateCount()"><label for="c4_4">Bonnet / hood paint</label></div>
+<div class="item"><input type="checkbox" id="c4_5" onchange="updateCount()"><label for="c4_5">Boot / trunk paint</label></div>
+<div class="item"><input type="checkbox" id="c4_6" onchange="updateCount()"><label for="c4_6">Quarter panel paint</label></div>
+<div class="item"><input type="checkbox" id="c4_7" onchange="updateCount()"><label for="c4_7">Roof paint</label></div>
+<div class="item"><input type="checkbox" id="c4_8" onchange="updateCount()"><label for="c4_8">Side skirt paint</label></div>
+<div class="item"><input type="checkbox" id="c4_9" onchange="updateCount()"><label for="c4_9">Mirror cover paint</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s5">🔧 Paint Preparation & Refinishing <span class="select-all" onclick="event.stopPropagation();selectAll('g5',this)">select all</span></h3><div class="items" id="g5">
+<div class="item"><input type="checkbox" id="c5_0" onchange="updateCount()"><label for="c5_0">Paint stripping</label></div>
+<div class="item"><input type="checkbox" id="c5_1" onchange="updateCount()"><label for="c5_1">Sanding & surface prep</label></div>
+<div class="item"><input type="checkbox" id="c5_2" onchange="updateCount()"><label for="c5_2">Primer application</label></div>
+<div class="item"><input type="checkbox" id="c5_3" onchange="updateCount()"><label for="c5_3">Sealer application</label></div>
+<div class="item"><input type="checkbox" id="c5_4" onchange="updateCount()"><label for="c5_4">Base coat application</label></div>
+<div class="item"><input type="checkbox" id="c5_5" onchange="updateCount()"><label for="c5_5">Clear coat application</label></div>
+<div class="item"><input type="checkbox" id="c5_6" onchange="updateCount()"><label for="c5_6">High-gloss clear coat</label></div>
+<div class="item"><input type="checkbox" id="c5_7" onchange="updateCount()"><label for="c5_7">Ceramic clear coat</label></div>
+<div class="item"><input type="checkbox" id="c5_8" onchange="updateCount()"><label for="c5_8">UV-resistant clear coat</label></div>
+<div class="item"><input type="checkbox" id="c5_9" onchange="updateCount()"><label for="c5_9">Paint curing (bake booth)</label></div>
+<div class="item"><input type="checkbox" id="c5_10" onchange="updateCount()"><label for="c5_10">Wet sanding</label></div>
+<div class="item"><input type="checkbox" id="c5_11" onchange="updateCount()"><label for="c5_11">Paint correction (post paint)</label></div>
+<div class="item"><input type="checkbox" id="c5_12" onchange="updateCount()"><label for="c5_12">Orange peel removal</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s6">🔧 Smart Repair / Cosmetic Repairs <span class="select-all" onclick="event.stopPropagation();selectAll('g6',this)">select all</span></h3><div class="items" id="g6">
+<div class="item"><input type="checkbox" id="c6_0" onchange="updateCount()"><label for="c6_0">Smart bumper repair</label></div>
+<div class="item"><input type="checkbox" id="c6_1" onchange="updateCount()"><label for="c6_1">Scratch repair (light)</label></div>
+<div class="item"><input type="checkbox" id="c6_2" onchange="updateCount()"><label for="c6_2">Scratch repair (deep)</label></div>
+<div class="item"><input type="checkbox" id="c6_3" onchange="updateCount()"><label for="c6_3">Stone chip repair</label></div>
+<div class="item"><input type="checkbox" id="c6_4" onchange="updateCount()"><label for="c6_4">Scuff removal</label></div>
+<div class="item"><input type="checkbox" id="c6_5" onchange="updateCount()"><label for="c6_5">Localised paint blending</label></div>
+<div class="item"><input type="checkbox" id="c6_6" onchange="updateCount()"><label for="c6_6">Plastic trim repair</label></div>
+<div class="item"><input type="checkbox" id="c6_7" onchange="updateCount()"><label for="c6_7">Plastic welding (bumper repair)</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s7">🔧 Customisation & High-End Finishes <span class="select-all" onclick="event.stopPropagation();selectAll('g7',this)">select all</span></h3><div class="items" id="g7">
+<div class="item"><input type="checkbox" id="c7_0" onchange="updateCount()"><label for="c7_0">Exposed carbon repaint</label></div>
+<div class="item"><input type="checkbox" id="c7_1" onchange="updateCount()"><label for="c7_1">Carbon fibre repair</label></div>
+<div class="item"><input type="checkbox" id="c7_2" onchange="updateCount()"><label for="c7_2">Carbon clear coat refinishing</label></div>
+<div class="item"><input type="checkbox" id="c7_3" onchange="updateCount()"><label for="c7_3">Gloss black package</label></div>
+<div class="item"><input type="checkbox" id="c7_4" onchange="updateCount()"><label for="c7_4">Shadow line package</label></div>
+<div class="item"><input type="checkbox" id="c7_5" onchange="updateCount()"><label for="c7_5">Chrome delete (painted)</label></div>
+<div class="item"><input type="checkbox" id="c7_6" onchange="updateCount()"><label for="c7_6">Accent colour detailing</label></div>
+<div class="item"><input type="checkbox" id="c7_7" onchange="updateCount()"><label for="c7_7">Pin striping</label></div>
+<div class="item"><input type="checkbox" id="c7_8" onchange="updateCount()"><label for="c7_8">Hand-painted details</label></div>
+<div class="item"><input type="checkbox" id="c7_9" onchange="updateCount()"><label for="c7_9">Badge colour customisation</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s8">🔧 Paint Protection & Post-Paint <span class="select-all" onclick="event.stopPropagation();selectAll('g8',this)">select all</span></h3><div class="items" id="g8">
+<div class="item"><input type="checkbox" id="c8_0" onchange="updateCount()"><label for="c8_0">Ceramic coating (post paint)</label></div>
+<div class="item"><input type="checkbox" id="c8_1" onchange="updateCount()"><label for="c8_1">PPF – partial</label></div>
+<div class="item"><input type="checkbox" id="c8_2" onchange="updateCount()"><label for="c8_2">PPF – full car</label></div>
+<div class="item"><input type="checkbox" id="c8_3" onchange="updateCount()"><label for="c8_3">Stone guard application</label></div>
+<div class="item"><input type="checkbox" id="c8_4" onchange="updateCount()"><label for="c8_4">Clear bra installation</label></div>
+<div class="item"><input type="checkbox" id="c8_5" onchange="updateCount()"><label for="c8_5">Headlight PPF</label></div>
+<div class="item"><input type="checkbox" id="c8_6" onchange="updateCount()"><label for="c8_6">Post-paint inspection report</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s9">🔧 Glass, Trim & Accessories <span class="select-all" onclick="event.stopPropagation();selectAll('g9',this)">select all</span></h3><div class="items" id="g9">
+<div class="item"><input type="checkbox" id="c9_0" onchange="updateCount()"><label for="c9_0">Windscreen replacement</label></div>
+<div class="item"><input type="checkbox" id="c9_1" onchange="updateCount()"><label for="c9_1">Rear glass replacement</label></div>
+<div class="item"><input type="checkbox" id="c9_2" onchange="updateCount()"><label for="c9_2">Side glass replacement</label></div>
+<div class="item"><input type="checkbox" id="c9_3" onchange="updateCount()"><label for="c9_3">Window trim replacement</label></div>
+<div class="item"><input type="checkbox" id="c9_4" onchange="updateCount()"><label for="c9_4">Door moulding replacement</label></div>
+<div class="item"><input type="checkbox" id="c9_5" onchange="updateCount()"><label for="c9_5">Emblem / badge replacement</label></div>
+<div class="item"><input type="checkbox" id="c9_6" onchange="updateCount()"><label for="c9_6">Roof trim replacement</label></div>
+<div class="item"><input type="checkbox" id="c9_7" onchange="updateCount()"><label for="c9_7">Sunroof panel replacement</label></div>
+<div class="item"><input type="checkbox" id="c9_8" onchange="updateCount()"><label for="c9_8">Tail light replacement</label></div>
+<div class="item"><input type="checkbox" id="c9_9" onchange="updateCount()"><label for="c9_9">Headlight replacement</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s10">🔧 Structural & Safety (Accident Repair) <span class="select-all" onclick="event.stopPropagation();selectAll('g10',this)">select all</span></h3><div class="items" id="g10">
+<div class="item"><input type="checkbox" id="c10_0" onchange="updateCount()"><label for="c10_0">Insurance accident repair</label></div>
+<div class="item"><input type="checkbox" id="c10_1" onchange="updateCount()"><label for="c10_1">Frame measurement report</label></div>
+<div class="item"><input type="checkbox" id="c10_2" onchange="updateCount()"><label for="c10_2">Structural welding</label></div>
+<div class="item"><input type="checkbox" id="c10_3" onchange="updateCount()"><label for="c10_3">Crash bar replacement</label></div>
+<div class="item"><input type="checkbox" id="c10_4" onchange="updateCount()"><label for="c10_4">Airbag system inspection</label></div>
+<div class="item"><input type="checkbox" id="c10_5" onchange="updateCount()"><label for="c10_5">Airbag replacement</label></div>
+<div class="item"><input type="checkbox" id="c10_6" onchange="updateCount()"><label for="c10_6">Seatbelt pretensioner replacement</label></div>
+<div class="item"><input type="checkbox" id="c10_7" onchange="updateCount()"><label for="c10_7">Post-accident safety check</label></div>
+<div class="item"><input type="checkbox" id="c10_8" onchange="updateCount()"><label for="c10_8">Pre-delivery body inspection</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s11">🔧 Labour & Materials <span class="select-all" onclick="event.stopPropagation();selectAll('g11',this)">select all</span></h3><div class="items" id="g11">
+<div class="item"><input type="checkbox" id="c11_0" onchange="updateCount()"><label for="c11_0">Body repair labour (per hour)</label></div>
+<div class="item"><input type="checkbox" id="c11_1" onchange="updateCount()"><label for="c11_1">Paint labour (per hour)</label></div>
+<div class="item"><input type="checkbox" id="c11_2" onchange="updateCount()"><label for="c11_2">Paint materials charge</label></div>
+<div class="item"><input type="checkbox" id="c11_3" onchange="updateCount()"><label for="c11_3">Colour matching fee</label></div>
+<div class="item"><input type="checkbox" id="c11_4" onchange="updateCount()"><label for="c11_4">Special paint surcharge</label></div>
+<div class="item"><input type="checkbox" id="c11_5" onchange="updateCount()"><label for="c11_5">Carbon fibre labour rate</label></div>
+<div class="item"><input type="checkbox" id="c11_6" onchange="updateCount()"><label for="c11_6">Emergency / priority repair</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s12">🪡 Seating Upholstery <span class="select-all" onclick="event.stopPropagation();selectAll('g12',this)">select all</span></h3><div class="items" id="g12">
+<div class="item"><input type="checkbox" id="c12_0" onchange="updateCount()"><label for="c12_0">Leather upholstery – Front seats (pair)</label></div>
+<div class="item"><input type="checkbox" id="c12_1" onchange="updateCount()"><label for="c12_1">Leather upholstery – Front seat (single)</label></div>
+<div class="item"><input type="checkbox" id="c12_2" onchange="updateCount()"><label for="c12_2">Leather upholstery – Rear seats (full bench)</label></div>
+<div class="item"><input type="checkbox" id="c12_3" onchange="updateCount()"><label for="c12_3">Leather upholstery – Rear seat (single)</label></div>
+<div class="item"><input type="checkbox" id="c12_4" onchange="updateCount()"><label for="c12_4">Leather upholstery – Third row seats</label></div>
+<div class="item"><input type="checkbox" id="c12_5" onchange="updateCount()"><label for="c12_5">Leather seat cushion replacement</label></div>
+<div class="item"><input type="checkbox" id="c12_6" onchange="updateCount()"><label for="c12_6">Leather seat backrest replacement</label></div>
+<div class="item"><input type="checkbox" id="c12_7" onchange="updateCount()"><label for="c12_7">Perforated leather upholstery</label></div>
+<div class="item"><input type="checkbox" id="c12_8" onchange="updateCount()"><label for="c12_8">Quilted / diamond stitch upholstery</label></div>
+<div class="item"><input type="checkbox" id="c12_9" onchange="updateCount()"><label for="c12_9">Two-tone leather seats</label></div>
+<div class="item"><input type="checkbox" id="c12_10" onchange="updateCount()"><label for="c12_10">Contrast stitching upgrade</label></div>
+<div class="item"><input type="checkbox" id="c12_11" onchange="updateCount()"><label for="c12_11">OEM leather restoration</label></div>
+<div class="item"><input type="checkbox" id="c12_12" onchange="updateCount()"><label for="c12_12">Custom leather seat design</label></div>
+<div class="item"><input type="checkbox" id="c12_13" onchange="updateCount()"><label for="c12_13">Heated seat leather replacement</label></div>
+<div class="item"><input type="checkbox" id="c12_14" onchange="updateCount()"><label for="c12_14">Ventilated seat leather replacement</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s13">🪡 Dashboard & Upper Trim <span class="select-all" onclick="event.stopPropagation();selectAll('g13',this)">select all</span></h3><div class="items" id="g13">
+<div class="item"><input type="checkbox" id="c13_0" onchange="updateCount()"><label for="c13_0">Leather upholstery – Dashboard (full)</label></div>
+<div class="item"><input type="checkbox" id="c13_1" onchange="updateCount()"><label for="c13_1">Leather upholstery – Dashboard (upper section)</label></div>
+<div class="item"><input type="checkbox" id="c13_2" onchange="updateCount()"><label for="c13_2">Leather upholstery – Instrument cluster hood</label></div>
+<div class="item"><input type="checkbox" id="c13_3" onchange="updateCount()"><label for="c13_3">Leather upholstery – Centre dash section</label></div>
+<div class="item"><input type="checkbox" id="c13_4" onchange="updateCount()"><label for="c13_4">Leather upholstery – Airbag cover (leather wrapped)</label></div>
+<div class="item"><input type="checkbox" id="c13_5" onchange="updateCount()"><label for="c13_5">Dashboard re-trim (OEM spec)</label></div>
+<div class="item"><input type="checkbox" id="c13_6" onchange="updateCount()"><label for="c13_6">Dashboard re-trim (custom design)</label></div>
+<div class="item"><input type="checkbox" id="c13_7" onchange="updateCount()"><label for="c13_7">Contrast stitching – dashboard</label></div>
+<div class="item"><input type="checkbox" id="c13_8" onchange="updateCount()"><label for="c13_8">Alcantara dashboard option</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s14">🪡 Door Panels & Side Trim <span class="select-all" onclick="event.stopPropagation();selectAll('g14',this)">select all</span></h3><div class="items" id="g14">
+<div class="item"><input type="checkbox" id="c14_0" onchange="updateCount()"><label for="c14_0">Leather upholstery – Door panels (front pair)</label></div>
+<div class="item"><input type="checkbox" id="c14_1" onchange="updateCount()"><label for="c14_1">Leather upholstery – Door panels (rear pair)</label></div>
+<div class="item"><input type="checkbox" id="c14_2" onchange="updateCount()"><label for="c14_2">Leather upholstery – Armrests</label></div>
+<div class="item"><input type="checkbox" id="c14_3" onchange="updateCount()"><label for="c14_3">Leather upholstery – Door inserts</label></div>
+<div class="item"><input type="checkbox" id="c14_4" onchange="updateCount()"><label for="c14_4">Leather upholstery – Door handles</label></div>
+<div class="item"><input type="checkbox" id="c14_5" onchange="updateCount()"><label for="c14_5">Two-tone door trim</label></div>
+<div class="item"><input type="checkbox" id="c14_6" onchange="updateCount()"><label for="c14_6">Diamond stitch door panels</label></div>
+<div class="item"><input type="checkbox" id="c14_7" onchange="updateCount()"><label for="c14_7">Alcantara door trim option</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s15">🪡 Centre Console & Interior Details <span class="select-all" onclick="event.stopPropagation();selectAll('g15',this)">select all</span></h3><div class="items" id="g15">
+<div class="item"><input type="checkbox" id="c15_0" onchange="updateCount()"><label for="c15_0">Leather upholstery – Centre console</label></div>
+<div class="item"><input type="checkbox" id="c15_1" onchange="updateCount()"><label for="c15_1">Leather upholstery – Gear surround</label></div>
+<div class="item"><input type="checkbox" id="c15_2" onchange="updateCount()"><label for="c15_2">Leather upholstery – Cup holder surround</label></div>
+<div class="item"><input type="checkbox" id="c15_3" onchange="updateCount()"><label for="c15_3">Leather upholstery – Armrest lid</label></div>
+<div class="item"><input type="checkbox" id="c15_4" onchange="updateCount()"><label for="c15_4">Leather upholstery – Storage compartments</label></div>
+<div class="item"><input type="checkbox" id="c15_5" onchange="updateCount()"><label for="c15_5">Leather upholstery – Seat backs (rear view)</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s16">🪡 Steering Wheel & Controls <span class="select-all" onclick="event.stopPropagation();selectAll('g16',this)">select all</span></h3><div class="items" id="g16">
+<div class="item"><input type="checkbox" id="c16_0" onchange="updateCount()"><label for="c16_0">Steering wheel leather re-wrap</label></div>
+<div class="item"><input type="checkbox" id="c16_1" onchange="updateCount()"><label for="c16_1">Flat-bottom steering wheel re-wrap</label></div>
+<div class="item"><input type="checkbox" id="c16_2" onchange="updateCount()"><label for="c16_2">Alcantara steering wheel</label></div>
+<div class="item"><input type="checkbox" id="c16_3" onchange="updateCount()"><label for="c16_3">Carbon steering wheel leather trim</label></div>
+<div class="item"><input type="checkbox" id="c16_4" onchange="updateCount()"><label for="c16_4">Steering wheel stitching colour change</label></div>
+<div class="item"><input type="checkbox" id="c16_5" onchange="updateCount()"><label for="c16_5">Paddle shifter leather trim</label></div>
+<div class="item"><input type="checkbox" id="c16_6" onchange="updateCount()"><label for="c16_6">Gear knob leather trim</label></div>
+<div class="item"><input type="checkbox" id="c16_7" onchange="updateCount()"><label for="c16_7">Handbrake leather trim</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s17">🪡 Roof, Pillars & Headliner <span class="select-all" onclick="event.stopPropagation();selectAll('g17',this)">select all</span></h3><div class="items" id="g17">
+<div class="item"><input type="checkbox" id="c17_0" onchange="updateCount()"><label for="c17_0">Headliner re-trim (leather)</label></div>
+<div class="item"><input type="checkbox" id="c17_1" onchange="updateCount()"><label for="c17_1">Headliner re-trim (Alcantara)</label></div>
+<div class="item"><input type="checkbox" id="c17_2" onchange="updateCount()"><label for="c17_2">A-pillar trim upholstery</label></div>
+<div class="item"><input type="checkbox" id="c17_3" onchange="updateCount()"><label for="c17_3">B-pillar trim upholstery</label></div>
+<div class="item"><input type="checkbox" id="c17_4" onchange="updateCount()"><label for="c17_4">C-pillar trim upholstery</label></div>
+<div class="item"><input type="checkbox" id="c17_5" onchange="updateCount()"><label for="c17_5">Sun visor leather trim</label></div>
+<div class="item"><input type="checkbox" id="c17_6" onchange="updateCount()"><label for="c17_6">Grab handle leather trim</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s18">🪡 Floor & Lower Interior <span class="select-all" onclick="event.stopPropagation();selectAll('g18',this)">select all</span></h3><div class="items" id="g18">
+<div class="item"><input type="checkbox" id="c18_0" onchange="updateCount()"><label for="c18_0">Leather floor mats (custom)</label></div>
+<div class="item"><input type="checkbox" id="c18_1" onchange="updateCount()"><label for="c18_1">Diamond stitch floor mats</label></div>
+<div class="item"><input type="checkbox" id="c18_2" onchange="updateCount()"><label for="c18_2">Full leather floor lining</label></div>
+<div class="item"><input type="checkbox" id="c18_3" onchange="updateCount()"><label for="c18_3">Carpet replacement (OEM)</label></div>
+<div class="item"><input type="checkbox" id="c18_4" onchange="updateCount()"><label for="c18_4">Carpet replacement (custom colour)</label></div>
+<div class="item"><input type="checkbox" id="c18_5" onchange="updateCount()"><label for="c18_5">Heel pad installation</label></div>
+<div class="item"><input type="checkbox" id="c18_6" onchange="updateCount()"><label for="c18_6">Sound insulation under floor</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s19">🪡 Trunk / Boot Upholstery <span class="select-all" onclick="event.stopPropagation();selectAll('g19',this)">select all</span></h3><div class="items" id="g19">
+<div class="item"><input type="checkbox" id="c19_0" onchange="updateCount()"><label for="c19_0">Leather trunk lining (full)</label></div>
+<div class="item"><input type="checkbox" id="c19_1" onchange="updateCount()"><label for="c19_1">Leather trunk floor</label></div>
+<div class="item"><input type="checkbox" id="c19_2" onchange="updateCount()"><label for="c19_2">Leather trunk side panels</label></div>
+<div class="item"><input type="checkbox" id="c19_3" onchange="updateCount()"><label for="c19_3">Trunk lid leather trim</label></div>
+<div class="item"><input type="checkbox" id="c19_4" onchange="updateCount()"><label for="c19_4">Alcantara trunk lining</label></div>
+<div class="item"><input type="checkbox" id="c19_5" onchange="updateCount()"><label for="c19_5">Custom trunk storage upholstery</label></div>
+<div class="item"><input type="checkbox" id="c19_6" onchange="updateCount()"><label for="c19_6">Spare wheel cover upholstery</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s20">🪡 Alcantara & Special Materials <span class="select-all" onclick="event.stopPropagation();selectAll('g20',this)">select all</span></h3><div class="items" id="g20">
+<div class="item"><input type="checkbox" id="c20_0" onchange="updateCount()"><label for="c20_0">Alcantara upholstery – seats</label></div>
+<div class="item"><input type="checkbox" id="c20_1" onchange="updateCount()"><label for="c20_1">Alcantara upholstery – dashboard</label></div>
+<div class="item"><input type="checkbox" id="c20_2" onchange="updateCount()"><label for="c20_2">Alcantara upholstery – doors</label></div>
+<div class="item"><input type="checkbox" id="c20_3" onchange="updateCount()"><label for="c20_3">Alcantara upholstery – headliner</label></div>
+<div class="item"><input type="checkbox" id="c20_4" onchange="updateCount()"><label for="c20_4">Alcantara upholstery – steering wheel</label></div>
+<div class="item"><input type="checkbox" id="c20_5" onchange="updateCount()"><label for="c20_5">Alcantara upholstery – centre console</label></div>
+<div class="item"><input type="checkbox" id="c20_6" onchange="updateCount()"><label for="c20_6">Alcantara colour selection upgrade</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s21">🪡 Leather Repair & Restoration <span class="select-all" onclick="event.stopPropagation();selectAll('g21',this)">select all</span></h3><div class="items" id="g21">
+<div class="item"><input type="checkbox" id="c21_0" onchange="updateCount()"><label for="c21_0">Leather cleaning & conditioning</label></div>
+<div class="item"><input type="checkbox" id="c21_1" onchange="updateCount()"><label for="c21_1">Leather crack repair</label></div>
+<div class="item"><input type="checkbox" id="c21_2" onchange="updateCount()"><label for="c21_2">Leather tear repair</label></div>
+<div class="item"><input type="checkbox" id="c21_3" onchange="updateCount()"><label for="c21_3">Leather recolouring</label></div>
+<div class="item"><input type="checkbox" id="c21_4" onchange="updateCount()"><label for="c21_4">Seat bolster repair</label></div>
+<div class="item"><input type="checkbox" id="c21_5" onchange="updateCount()"><label for="c21_5">Dashboard leather repair</label></div>
+<div class="item"><input type="checkbox" id="c21_6" onchange="updateCount()"><label for="c21_6">UV damage repair</label></div>
+<div class="item"><input type="checkbox" id="c21_7" onchange="updateCount()"><label for="c21_7">Leather protection coating</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s22">🪡 Customisation & Options <span class="select-all" onclick="event.stopPropagation();selectAll('g22',this)">select all</span></h3><div class="items" id="g22">
+<div class="item"><input type="checkbox" id="c22_0" onchange="updateCount()"><label for="c22_0">Custom colour leather</label></div>
+<div class="item"><input type="checkbox" id="c22_1" onchange="updateCount()"><label for="c22_1">Exotic leather (Nappa, semi-aniline, vegan leather)</label></div>
+<div class="item"><input type="checkbox" id="c22_2" onchange="updateCount()"><label for="c22_2">Contrast stitching colour</label></div>
+<div class="item"><input type="checkbox" id="c22_3" onchange="updateCount()"><label for="c22_3">Embossed logos</label></div>
+<div class="item"><input type="checkbox" id="c22_4" onchange="updateCount()"><label for="c22_4">Perforation patterns</label></div>
+<div class="item"><input type="checkbox" id="c22_5" onchange="updateCount()"><label for="c22_5">OEM colour matching</label></div>
+<div class="item"><input type="checkbox" id="c22_6" onchange="updateCount()"><label for="c22_6">Supercar interior custom package</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s23">🪡 Labour & Materials <span class="select-all" onclick="event.stopPropagation();selectAll('g23',this)">select all</span></h3><div class="items" id="g23">
+<div class="item"><input type="checkbox" id="c23_0" onchange="updateCount()"><label for="c23_0">Upholstery labour (per hour)</label></div>
+<div class="item"><input type="checkbox" id="c23_1" onchange="updateCount()"><label for="c23_1">Leather material charge (per sqm)</label></div>
+<div class="item"><input type="checkbox" id="c23_2" onchange="updateCount()"><label for="c23_2">Alcantara material charge</label></div>
+<div class="item"><input type="checkbox" id="c23_3" onchange="updateCount()"><label for="c23_3">Stitching surcharge</label></div>
+<div class="item"><input type="checkbox" id="c23_4" onchange="updateCount()"><label for="c23_4">Airbag handling surcharge</label></div>
+<div class="item"><input type="checkbox" id="c23_5" onchange="updateCount()"><label for="c23_5">Emergency / priority service</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s24">⚙️ Exterior Customisation <span class="select-all" onclick="event.stopPropagation();selectAll('g24',this)">select all</span></h3><div class="items" id="g24">
+<div class="item"><input type="checkbox" id="c24_0" onchange="updateCount()"><label for="c24_0">Body kit installation (OEM)</label></div>
+<div class="item"><input type="checkbox" id="c24_1" onchange="updateCount()"><label for="c24_1">Body kit installation (aftermarket)</label></div>
+<div class="item"><input type="checkbox" id="c24_2" onchange="updateCount()"><label for="c24_2">Widebody kit installation</label></div>
+<div class="item"><input type="checkbox" id="c24_3" onchange="updateCount()"><label for="c24_3">Carbon fibre body kit installation</label></div>
+<div class="item"><input type="checkbox" id="c24_4" onchange="updateCount()"><label for="c24_4">Front splitter installation</label></div>
+<div class="item"><input type="checkbox" id="c24_5" onchange="updateCount()"><label for="c24_5">Rear diffuser installation</label></div>
+<div class="item"><input type="checkbox" id="c24_6" onchange="updateCount()"><label for="c24_6">Side skirt installation</label></div>
+<div class="item"><input type="checkbox" id="c24_7" onchange="updateCount()"><label for="c24_7">Rear spoiler installation</label></div>
+<div class="item"><input type="checkbox" id="c24_8" onchange="updateCount()"><label for="c24_8">Active spoiler retrofit</label></div>
+<div class="item"><input type="checkbox" id="c24_9" onchange="updateCount()"><label for="c24_9">Hood / bonnet vents installation</label></div>
+<div class="item"><input type="checkbox" id="c24_10" onchange="updateCount()"><label for="c24_10">Fender vents installation</label></div>
+<div class="item"><input type="checkbox" id="c24_11" onchange="updateCount()"><label for="c24_11">Custom grille installation</label></div>
+<div class="item"><input type="checkbox" id="c24_12" onchange="updateCount()"><label for="c24_12">Custom exhaust tips installation</label></div>
+<div class="item"><input type="checkbox" id="c24_13" onchange="updateCount()"><label for="c24_13">Badge delete / relocation</label></div>
+<div class="item"><input type="checkbox" id="c24_14" onchange="updateCount()"><label for="c24_14">Custom emblem installation</label></div>
+<div class="item"><input type="checkbox" id="c24_15" onchange="updateCount()"><label for="c24_15">Tow hook installation (custom)</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s25">⚙️ Carbon Fibre & Lightweight Parts <span class="select-all" onclick="event.stopPropagation();selectAll('g25',this)">select all</span></h3><div class="items" id="g25">
+<div class="item"><input type="checkbox" id="c25_0" onchange="updateCount()"><label for="c25_0">Carbon bonnet installation</label></div>
+<div class="item"><input type="checkbox" id="c25_1" onchange="updateCount()"><label for="c25_1">Carbon roof installation</label></div>
+<div class="item"><input type="checkbox" id="c25_2" onchange="updateCount()"><label for="c25_2">Carbon doors installation</label></div>
+<div class="item"><input type="checkbox" id="c25_3" onchange="updateCount()"><label for="c25_3">Carbon mirrors installation</label></div>
+<div class="item"><input type="checkbox" id="c25_4" onchange="updateCount()"><label for="c25_4">Carbon interior trim installation</label></div>
+<div class="item"><input type="checkbox" id="c25_5" onchange="updateCount()"><label for="c25_5">Forged carbon part installation</label></div>
+<div class="item"><input type="checkbox" id="c25_6" onchange="updateCount()"><label for="c25_6">Carbon fibre repair</label></div>
+<div class="item"><input type="checkbox" id="c25_7" onchange="updateCount()"><label for="c25_7">Carbon fibre refinishing</label></div>
+<div class="item"><input type="checkbox" id="c25_8" onchange="updateCount()"><label for="c25_8">Exposed carbon clear coat</label></div>
+<div class="item"><input type="checkbox" id="c25_9" onchange="updateCount()"><label for="c25_9">Carbon PPF installation</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s26">⚙️ Lighting & Visual Effects <span class="select-all" onclick="event.stopPropagation();selectAll('g26',this)">select all</span></h3><div class="items" id="g26">
+<div class="item"><input type="checkbox" id="c26_0" onchange="updateCount()"><label for="c26_0">Ambient lighting upgrade</label></div>
+<div class="item"><input type="checkbox" id="c26_1" onchange="updateCount()"><label for="c26_1">RGB interior lighting installation</label></div>
+<div class="item"><input type="checkbox" id="c26_2" onchange="updateCount()"><label for="c26_2">Star roof headliner (Rolls-Royce style)</label></div>
+<div class="item"><input type="checkbox" id="c26_3" onchange="updateCount()"><label for="c26_3">Star door inserts</label></div>
+<div class="item"><input type="checkbox" id="c26_4" onchange="updateCount()"><label for="c26_4">Star dashboard insert</label></div>
+<div class="item"><input type="checkbox" id="c26_5" onchange="updateCount()"><label for="c26_5">Illuminated door sills</label></div>
+<div class="item"><input type="checkbox" id="c26_6" onchange="updateCount()"><label for="c26_6">Illuminated badges</label></div>
+<div class="item"><input type="checkbox" id="c26_7" onchange="updateCount()"><label for="c26_7">Custom puddle lights</label></div>
+<div class="item"><input type="checkbox" id="c26_8" onchange="updateCount()"><label for="c26_8">Dynamic indicator retrofit</label></div>
+<div class="item"><input type="checkbox" id="c26_9" onchange="updateCount()"><label for="c26_9">Underbody lighting (show use)</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s27">⚙️ Interior Bespoke Works <span class="select-all" onclick="event.stopPropagation();selectAll('g27',this)">select all</span></h3><div class="items" id="g27">
+<div class="item"><input type="checkbox" id="c27_0" onchange="updateCount()"><label for="c27_0">Full bespoke interior design</label></div>
+<div class="item"><input type="checkbox" id="c27_1" onchange="updateCount()"><label for="c27_1">Custom leather interior build</label></div>
+<div class="item"><input type="checkbox" id="c27_2" onchange="updateCount()"><label for="c27_2">Alcantara interior conversion</label></div>
+<div class="item"><input type="checkbox" id="c27_3" onchange="updateCount()"><label for="c27_3">Two-tone interior design</label></div>
+<div class="item"><input type="checkbox" id="c27_4" onchange="updateCount()"><label for="c27_4">Diamond stitch interior</label></div>
+<div class="item"><input type="checkbox" id="c27_5" onchange="updateCount()"><label for="c27_5">Contrast stitching upgrade</label></div>
+<div class="item"><input type="checkbox" id="c27_6" onchange="updateCount()"><label for="c27_6">Custom seat embroidery</label></div>
+<div class="item"><input type="checkbox" id="c27_7" onchange="updateCount()"><label for="c27_7">Embossed logos in leather</label></div>
+<div class="item"><input type="checkbox" id="c27_8" onchange="updateCount()"><label for="c27_8">Custom steering wheel build</label></div>
+<div class="item"><input type="checkbox" id="c27_9" onchange="updateCount()"><label for="c27_9">Flat-bottom steering wheel conversion</label></div>
+<div class="item"><input type="checkbox" id="c27_10" onchange="updateCount()"><label for="c27_10">Custom centre console fabrication</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s28">⚙️ Audio, Multimedia & Tech <span class="select-all" onclick="event.stopPropagation();selectAll('g28',this)">select all</span></h3><div class="items" id="g28">
+<div class="item"><input type="checkbox" id="c28_0" onchange="updateCount()"><label for="c28_0">Premium audio system upgrade</label></div>
+<div class="item"><input type="checkbox" id="c28_1" onchange="updateCount()"><label for="c28_1">Subwoofer enclosure fabrication</label></div>
+<div class="item"><input type="checkbox" id="c28_2" onchange="updateCount()"><label for="c28_2">Amplifier installation</label></div>
+<div class="item"><input type="checkbox" id="c28_3" onchange="updateCount()"><label for="c28_3">DSP tuning</label></div>
+<div class="item"><input type="checkbox" id="c28_4" onchange="updateCount()"><label for="c28_4">Rear entertainment system</label></div>
+<div class="item"><input type="checkbox" id="c28_5" onchange="updateCount()"><label for="c28_5">Roof-mounted screen installation</label></div>
+<div class="item"><input type="checkbox" id="c28_6" onchange="updateCount()"><label for="c28_6">Apple CarPlay / Android Auto retrofit</label></div>
+<div class="item"><input type="checkbox" id="c28_7" onchange="updateCount()"><label for="c28_7">Heads-up display retrofit</label></div>
+<div class="item"><input type="checkbox" id="c28_8" onchange="updateCount()"><label for="c28_8">Custom gauge installation</label></div>
+<div class="item"><input type="checkbox" id="c28_9" onchange="updateCount()"><label for="c28_9">Dash cam installation (front & rear)</label></div>
+<div class="item"><input type="checkbox" id="c28_10" onchange="updateCount()"><label for="c28_10">360° camera retrofit</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s29">⚙️ Performance & Handling (Custom Builds) <span class="select-all" onclick="event.stopPropagation();selectAll('g29',this)">select all</span></h3><div class="items" id="g29">
+<div class="item"><input type="checkbox" id="c29_0" onchange="updateCount()"><label for="c29_0">Performance exhaust installation</label></div>
+<div class="item"><input type="checkbox" id="c29_1" onchange="updateCount()"><label for="c29_1">Valvetronic exhaust installation</label></div>
+<div class="item"><input type="checkbox" id="c29_2" onchange="updateCount()"><label for="c29_2">Intake system upgrade</label></div>
+<div class="item"><input type="checkbox" id="c29_3" onchange="updateCount()"><label for="c29_3">ECU tuning (Stage 1 / 2 / 3)</label></div>
+<div class="item"><input type="checkbox" id="c29_4" onchange="updateCount()"><label for="c29_4">Transmission tuning</label></div>
+<div class="item"><input type="checkbox" id="c29_5" onchange="updateCount()"><label for="c29_5">Suspension lowering springs</label></div>
+<div class="item"><input type="checkbox" id="c29_6" onchange="updateCount()"><label for="c29_6">Coilover installation</label></div>
+<div class="item"><input type="checkbox" id="c29_7" onchange="updateCount()"><label for="c29_7">Air suspension conversion</label></div>
+<div class="item"><input type="checkbox" id="c29_8" onchange="updateCount()"><label for="c29_8">Big brake kit installation</label></div>
+<div class="item"><input type="checkbox" id="c29_9" onchange="updateCount()"><label for="c29_9">Wheel spacer installation</label></div>
+<div class="item"><input type="checkbox" id="c29_10" onchange="updateCount()"><label for="c29_10">Track alignment setup</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s30">⚙️ Wheels, Tyres & Stance <span class="select-all" onclick="event.stopPropagation();selectAll('g30',this)">select all</span></h3><div class="items" id="g30">
+<div class="item"><input type="checkbox" id="c30_0" onchange="updateCount()"><label for="c30_0">Custom alloy wheels installation</label></div>
+<div class="item"><input type="checkbox" id="c30_1" onchange="updateCount()"><label for="c30_1">Forged wheels installation</label></div>
+<div class="item"><input type="checkbox" id="c30_2" onchange="updateCount()"><label for="c30_2">Centre-lock wheel conversion</label></div>
+<div class="item"><input type="checkbox" id="c30_3" onchange="updateCount()"><label for="c30_3">Custom wheel finishing</label></div>
+<div class="item"><input type="checkbox" id="c30_4" onchange="updateCount()"><label for="c30_4">Tyre stretch setup</label></div>
+<div class="item"><input type="checkbox" id="c30_5" onchange="updateCount()"><label for="c30_5">Stance setup (show spec)</label></div>
+<div class="item"><input type="checkbox" id="c30_6" onchange="updateCount()"><label for="c30_6">Wheel arch modification</label></div>
+<div class="item"><input type="checkbox" id="c30_7" onchange="updateCount()"><label for="c30_7">Fender rolling</label></div>
+<div class="item"><input type="checkbox" id="c30_8" onchange="updateCount()"><label for="c30_8">Fender pulling</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s31">⚙️ Special Finishes & Materials <span class="select-all" onclick="event.stopPropagation();selectAll('g31',this)">select all</span></h3><div class="items" id="g31">
+<div class="item"><input type="checkbox" id="c31_0" onchange="updateCount()"><label for="c31_0">Exposed carbon repaint</label></div>
+<div class="item"><input type="checkbox" id="c31_1" onchange="updateCount()"><label for="c31_1">Forged carbon conversion</label></div>
+<div class="item"><input type="checkbox" id="c31_2" onchange="updateCount()"><label for="c31_2">Colour-matched interior trims</label></div>
+<div class="item"><input type="checkbox" id="c31_3" onchange="updateCount()"><label for="c31_3">Chrome delete (custom paint)</label></div>
+<div class="item"><input type="checkbox" id="c31_4" onchange="updateCount()"><label for="c31_4">Accent colour packages</label></div>
+<div class="item"><input type="checkbox" id="c31_5" onchange="updateCount()"><label for="c31_5">Gold / bronze detailing</label></div>
+<div class="item"><input type="checkbox" id="c31_6" onchange="updateCount()"><label for="c31_6">Bespoke paint highlights</label></div>
+<div class="item"><input type="checkbox" id="c31_7" onchange="updateCount()"><label for="c31_7">Hand-painted pin striping</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s32">⚙️ Bespoke Utility & Lifestyle <span class="select-all" onclick="event.stopPropagation();selectAll('g32',this)">select all</span></h3><div class="items" id="g32">
+<div class="item"><input type="checkbox" id="c32_0" onchange="updateCount()"><label for="c32_0">Custom trunk build</label></div>
+<div class="item"><input type="checkbox" id="c32_1" onchange="updateCount()"><label for="c32_1">VIP refrigerator installation</label></div>
+<div class="item"><input type="checkbox" id="c32_2" onchange="updateCount()"><label for="c32_2">Champagne holder installation</label></div>
+<div class="item"><input type="checkbox" id="c32_3" onchange="updateCount()"><label for="c32_3">Custom storage compartments</label></div>
+<div class="item"><input type="checkbox" id="c32_4" onchange="updateCount()"><label for="c32_4">Fire extinguisher installation (track)</label></div>
+<div class="item"><input type="checkbox" id="c32_5" onchange="updateCount()"><label for="c32_5">Pet compartment build</label></div>
+<div class="item"><input type="checkbox" id="c32_6" onchange="updateCount()"><label for="c32_6">Armour plating (special request)</label></div>
+<div class="item"><input type="checkbox" id="c32_7" onchange="updateCount()"><label for="c32_7">Security upgrades (custom)</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s33">⚙️ Show Car & One-Off Projects <span class="select-all" onclick="event.stopPropagation();selectAll('g33',this)">select all</span></h3><div class="items" id="g33">
+<div class="item"><input type="checkbox" id="c33_0" onchange="updateCount()"><label for="c33_0">One-off custom build</label></div>
+<div class="item"><input type="checkbox" id="c33_1" onchange="updateCount()"><label for="c33_1">SEMA / show car preparation</label></div>
+<div class="item"><input type="checkbox" id="c33_2" onchange="updateCount()"><label for="c33_2">Brand collaboration builds</label></div>
+<div class="item"><input type="checkbox" id="c33_3" onchange="updateCount()"><label for="c33_3">Influencer / media build</label></div>
+<div class="item"><input type="checkbox" id="c33_4" onchange="updateCount()"><label for="c33_4">Full vehicle redesign project</label></div>
+<div class="item"><input type="checkbox" id="c33_5" onchange="updateCount()"><label for="c33_5">Concept car execution</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s34">⚙️ Labour & Project Items (Backend) <span class="select-all" onclick="event.stopPropagation();selectAll('g34',this)">select all</span></h3><div class="items" id="g34">
+<div class="item"><input type="checkbox" id="c34_0" onchange="updateCount()"><label for="c34_0">Custom fabrication labour (per hour)</label></div>
+<div class="item"><input type="checkbox" id="c34_1" onchange="updateCount()"><label for="c34_1">Carbon fabrication labour</label></div>
+<div class="item"><input type="checkbox" id="c34_2" onchange="updateCount()"><label for="c34_2">Electrical custom labour</label></div>
+<div class="item"><input type="checkbox" id="c34_3" onchange="updateCount()"><label for="c34_3">Design & CAD fee</label></div>
+<div class="item"><input type="checkbox" id="c34_4" onchange="updateCount()"><label for="c34_4">Project management fee</label></div>
+<div class="item"><input type="checkbox" id="c34_5" onchange="updateCount()"><label for="c34_5">R&D / prototype development</label></div>
+<div class="item"><input type="checkbox" id="c34_6" onchange="updateCount()"><label for="c34_6">Emergency / priority build</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s35">🛡️ Standard Packages <span class="select-all" onclick="event.stopPropagation();selectAll('g35',this)">select all</span></h3><div class="items" id="g35">
+<div class="item"><input type="checkbox" id="c35_0" onchange="updateCount()"><label for="c35_0">PPF – Full Front Package</label></div>
+<div class="item"><input type="checkbox" id="c35_1" onchange="updateCount()"><label for="c35_1">PPF – Half Car Package</label></div>
+<div class="item"><input type="checkbox" id="c35_2" onchange="updateCount()"><label for="c35_2">PPF – Full Car Package</label></div>
+<div class="item"><input type="checkbox" id="c35_3" onchange="updateCount()"><label for="c35_3">PPF – Track Package</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s36">🛡️ Individual Panels <span class="select-all" onclick="event.stopPropagation();selectAll('g36',this)">select all</span></h3><div class="items" id="g36">
+<div class="item"><input type="checkbox" id="c36_0" onchange="updateCount()"><label for="c36_0">PPF – Bonnet / Hood</label></div>
+<div class="item"><input type="checkbox" id="c36_1" onchange="updateCount()"><label for="c36_1">PPF – Front Bumper</label></div>
+<div class="item"><input type="checkbox" id="c36_2" onchange="updateCount()"><label for="c36_2">PPF – Rear Bumper</label></div>
+<div class="item"><input type="checkbox" id="c36_3" onchange="updateCount()"><label for="c36_3">PPF – Fender (Single)</label></div>
+<div class="item"><input type="checkbox" id="c36_4" onchange="updateCount()"><label for="c36_4">PPF – Door (Single)</label></div>
+<div class="item"><input type="checkbox" id="c36_5" onchange="updateCount()"><label for="c36_5">PPF – Quarter Panel</label></div>
+<div class="item"><input type="checkbox" id="c36_6" onchange="updateCount()"><label for="c36_6">PPF – Roof</label></div>
+<div class="item"><input type="checkbox" id="c36_7" onchange="updateCount()"><label for="c36_7">PPF – Side Skirts</label></div>
+<div class="item"><input type="checkbox" id="c36_8" onchange="updateCount()"><label for="c36_8">PPF – Mirror Caps</label></div>
+<div class="item"><input type="checkbox" id="c36_9" onchange="updateCount()"><label for="c36_9">PPF – A-Pillars</label></div>
+<div class="item"><input type="checkbox" id="c36_10" onchange="updateCount()"><label for="c36_10">PPF – B-Pillars</label></div>
+<div class="item"><input type="checkbox" id="c36_11" onchange="updateCount()"><label for="c36_11">PPF – C-Pillars</label></div>
+<div class="item"><input type="checkbox" id="c36_12" onchange="updateCount()"><label for="c36_12">PPF – Rear Arches</label></div>
+<div class="item"><input type="checkbox" id="c36_13" onchange="updateCount()"><label for="c36_13">PPF – Boot / Trunk Lid</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s37">🛡️ Specialty Areas <span class="select-all" onclick="event.stopPropagation();selectAll('g37',this)">select all</span></h3><div class="items" id="g37">
+<div class="item"><input type="checkbox" id="c37_0" onchange="updateCount()"><label for="c37_0">PPF – Headlights</label></div>
+<div class="item"><input type="checkbox" id="c37_1" onchange="updateCount()"><label for="c37_1">PPF – Tail Lights</label></div>
+<div class="item"><input type="checkbox" id="c37_2" onchange="updateCount()"><label for="c37_2">PPF – Door Cups / Handle Inserts</label></div>
+<div class="item"><input type="checkbox" id="c37_3" onchange="updateCount()"><label for="c37_3">PPF – Door Edges</label></div>
+<div class="item"><input type="checkbox" id="c37_4" onchange="updateCount()"><label for="c37_4">PPF – Loading Sill / Boot Lip</label></div>
+<div class="item"><input type="checkbox" id="c37_5" onchange="updateCount()"><label for="c37_5">PPF – Rocker Panels</label></div>
+<div class="item"><input type="checkbox" id="c37_6" onchange="updateCount()"><label for="c37_6">PPF – Fuel Cap Area</label></div>
+<div class="item"><input type="checkbox" id="c37_7" onchange="updateCount()"><label for="c37_7">PPF – Carbon Fibre Panels</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s38">🛡️ Film Types & Finishes <span class="select-all" onclick="event.stopPropagation();selectAll('g38',this)">select all</span></h3><div class="items" id="g38">
+<div class="item"><input type="checkbox" id="c38_0" onchange="updateCount()"><label for="c38_0">PPF – Clear Gloss</label></div>
+<div class="item"><input type="checkbox" id="c38_1" onchange="updateCount()"><label for="c38_1">PPF – Clear Matte / Stealth</label></div>
+<div class="item"><input type="checkbox" id="c38_2" onchange="updateCount()"><label for="c38_2">PPF – Satin Finish</label></div>
+<div class="item"><input type="checkbox" id="c38_3" onchange="updateCount()"><label for="c38_3">PPF – Self-Healing</label></div>
+<div class="item"><input type="checkbox" id="c38_4" onchange="updateCount()"><label for="c38_4">PPF – Hydrophobic</label></div>
+<div class="item"><input type="checkbox" id="c38_5" onchange="updateCount()"><label for="c38_5">PPF – Ceramic-Infused</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s39">🛡️ Colour PPF <span class="select-all" onclick="event.stopPropagation();selectAll('g39',this)">select all</span></h3><div class="items" id="g39">
+<div class="item"><input type="checkbox" id="c39_0" onchange="updateCount()"><label for="c39_0">Colour PPF – Full Car</label></div>
+<div class="item"><input type="checkbox" id="c39_1" onchange="updateCount()"><label for="c39_1">Colour PPF – Half Car</label></div>
+<div class="item"><input type="checkbox" id="c39_2" onchange="updateCount()"><label for="c39_2">Colour PPF – Individual Panel</label></div>
+<div class="item"><input type="checkbox" id="c39_3" onchange="updateCount()"><label for="c39_3">Colour PPF – Roof</label></div>
+<div class="item"><input type="checkbox" id="c39_4" onchange="updateCount()"><label for="c39_4">Colour PPF – Bonnet</label></div>
+<div class="item"><input type="checkbox" id="c39_5" onchange="updateCount()"><label for="c39_5">Colour PPF – Two-Tone</label></div>
+<div class="item"><input type="checkbox" id="c39_6" onchange="updateCount()"><label for="c39_6">Colour PPF – Custom Colour</label></div>
+<div class="item"><input type="checkbox" id="c39_7" onchange="updateCount()"><label for="c39_7">Colour PPF – Carbon Look</label></div>
+<div class="item"><input type="checkbox" id="c39_8" onchange="updateCount()"><label for="c39_8">Colour PPF – Gloss Finish</label></div>
+<div class="item"><input type="checkbox" id="c39_9" onchange="updateCount()"><label for="c39_9">Colour PPF – Matte Finish</label></div>
+<div class="item"><input type="checkbox" id="c39_10" onchange="updateCount()"><label for="c39_10">Colour PPF – Satin Finish</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s40">🛡️ Pre-PPF Preparation <span class="select-all" onclick="event.stopPropagation();selectAll('g40',this)">select all</span></h3><div class="items" id="g40">
+<div class="item"><input type="checkbox" id="c40_0" onchange="updateCount()"><label for="c40_0">Paint Decontamination</label></div>
+<div class="item"><input type="checkbox" id="c40_1" onchange="updateCount()"><label for="c40_1">Clay Bar Treatment</label></div>
+<div class="item"><input type="checkbox" id="c40_2" onchange="updateCount()"><label for="c40_2">Light Paint Correction</label></div>
+<div class="item"><input type="checkbox" id="c40_3" onchange="updateCount()"><label for="c40_3">Full Paint Correction</label></div>
+<div class="item"><input type="checkbox" id="c40_4" onchange="updateCount()"><label for="c40_4">Panel Wipe & IPA Prep</label></div>
+<div class="item"><input type="checkbox" id="c40_5" onchange="updateCount()"><label for="c40_5">Badge Removal & Refit</label></div>
+<div class="item"><input type="checkbox" id="c40_6" onchange="updateCount()"><label for="c40_6">Trim Removal & Refit</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s41">🛡️ Post-PPF Add-Ons <span class="select-all" onclick="event.stopPropagation();selectAll('g41',this)">select all</span></h3><div class="items" id="g41">
+<div class="item"><input type="checkbox" id="c41_0" onchange="updateCount()"><label for="c41_0">Ceramic Coating on PPF</label></div>
+<div class="item"><input type="checkbox" id="c41_1" onchange="updateCount()"><label for="c41_1">Edge Sealing</label></div>
+<div class="item"><input type="checkbox" id="c41_2" onchange="updateCount()"><label for="c41_2">Extended Warranty Registration</label></div>
+<div class="item"><input type="checkbox" id="c41_3" onchange="updateCount()"><label for="c41_3">PPF Inspection & Heat Activation</label></div>
+<div class="item"><input type="checkbox" id="c41_4" onchange="updateCount()"><label for="c41_4">Post-Installation Quality Check</label></div>
+<div class="item"><input type="checkbox" id="c41_5" onchange="updateCount()"><label for="c41_5">PPF-Safe Maintenance Wash</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s42">🛡️ Removal & Replacement <span class="select-all" onclick="event.stopPropagation();selectAll('g42',this)">select all</span></h3><div class="items" id="g42">
+<div class="item"><input type="checkbox" id="c42_0" onchange="updateCount()"><label for="c42_0">PPF Removal – Per Panel</label></div>
+<div class="item"><input type="checkbox" id="c42_1" onchange="updateCount()"><label for="c42_1">PPF Removal – Full Car</label></div>
+<div class="item"><input type="checkbox" id="c42_2" onchange="updateCount()"><label for="c42_2">Old PPF Residue Removal</label></div>
+<div class="item"><input type="checkbox" id="c42_3" onchange="updateCount()"><label for="c42_3">PPF Replacement – Per Panel</label></div>
+<div class="item"><input type="checkbox" id="c42_4" onchange="updateCount()"><label for="c42_4">Accident Panel PPF Re-Installation</label></div>
+</div></div>
+<div class="section"><h3 onclick="toggle(this)" id="s43">🛡️ Labour & Surcharges <span class="select-all" onclick="event.stopPropagation();selectAll('g43',this)">select all</span></h3><div class="items" id="g43">
+<div class="item"><input type="checkbox" id="c43_0" onchange="updateCount()"><label for="c43_0">PPF Installation Labour (Hourly)</label></div>
+<div class="item"><input type="checkbox" id="c43_1" onchange="updateCount()"><label for="c43_1">Colour PPF Surcharge</label></div>
+<div class="item"><input type="checkbox" id="c43_2" onchange="updateCount()"><label for="c43_2">Matte / Satin Surcharge</label></div>
+<div class="item"><input type="checkbox" id="c43_3" onchange="updateCount()"><label for="c43_3">Supercar Complexity Surcharge</label></div>
+<div class="item"><input type="checkbox" id="c43_4" onchange="updateCount()"><label for="c43_4">Custom Cutting Surcharge</label></div>
+<div class="item"><input type="checkbox" id="c43_5" onchange="updateCount()"><label for="c43_5">Priority / Emergency Service</label></div>
+</div></div>
+
+<div class="contact-section">
+<h2>📝 Additional Info</h2>
+<select id="volume" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:15px;margin-bottom:12px;background:white;">
+<option value="">Monthly vehicles serviced?</option>
+<option>Under 50</option><option>50-100</option><option>100-200</option><option>200-500</option><option>500+</option>
+</select>
+<select id="software" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:15px;margin-bottom:12px;background:white;">
+<option value="">Current software?</option>
+<option>None / Paper-based</option><option>Excel / Sheets</option><option>Other garage software</option><option>Custom built</option>
+</select>
+<textarea id="notes" placeholder="Any other services or requirements?" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:15px;min-height:80px;resize:vertical;"></textarea>
+</div>
+
+<div class="submit-area">
+<button class="submit-btn" onclick="submitForm()">Generate Summary</button>
+</div>
+</div>
+
+<div class="counter" id="counter">0 selected</div>
+
+<div class="result-modal" id="resultModal">
+<div class="result-box">
+<h2>✅ Service Summary</h2>
+<pre id="resultText"></pre>
+<button class="copy-btn" onclick="copyResult()">📋 Copy to Clipboard</button>
+<button class="copy-btn" style="background:#25D366;" onclick="sendWhatsApp()">💬 Send via WhatsApp</button>
+<button class="copy-btn" style="background:#666;" onclick="document.getElementById('resultModal').classList.remove('show')">Close</button>
+</div>
+</div>
+
+<script>
+function toggle(el) {
+  const items = el.nextElementSibling;
+  items.classList.toggle('show');
+  el.classList.toggle('open');
+}
+
+function selectAll(groupId, btn) {
+  const boxes = document.querySelectorAll('#' + groupId + ' input[type=checkbox]');
+  const allChecked = Array.from(boxes).every(b => b.checked);
+  boxes.forEach(b => b.checked = !allChecked);
+  updateCount();
+}
+
+function updateCount() {
+  const n = document.querySelectorAll('input[type=checkbox]:checked').length;
+  document.getElementById('counter').textContent = n + ' selected';
+}
+
+function submitForm() {
+  const garage = document.getElementById('garageName').value || 'N/A';
+  const contact = document.getElementById('contactName').value || 'N/A';
+  const phone = document.getElementById('phone').value || 'N/A';
+  const email = document.getElementById('email').value || '';
+  const volume = document.getElementById('volume').value || '';
+  const software = document.getElementById('software').value || '';
+  const notes = document.getElementById('notes').value || '';
+
+  let text = `autoGMS — Service Requirements\n`;
+  text += `========================\n`;
+  text += `Garage: ${garage}\nContact: ${contact}\nPhone: ${phone}\n`;
+  if (email) text += `Email: ${email}\n`;
+  text += `\n`;
+
+  const sections = document.querySelectorAll('.section');
+  let total = 0;
+  sections.forEach(s => {
+    const title = s.querySelector('h3').textContent.replace('select all','').trim();
+    const checked = s.querySelectorAll('input[type=checkbox]:checked');
+    if (checked.length > 0) {
+      text += `${title}\n`;
+      checked.forEach(c => {
+        text += `  ✓ ${c.nextElementSibling.textContent}\n`;
+        total++;
+      });
+      text += `\n`;
+    }
+  });
+
+  if (volume) text += `Monthly volume: ${volume}\n`;
+  if (software) text += `Current software: ${software}\n`;
+  if (notes) text += `Notes: ${notes}\n`;
+  text += `\nTotal services selected: ${total}`;
+
+  document.getElementById('resultText').textContent = text;
+  document.getElementById('resultModal').classList.add('show');
+}
+
+function copyResult() {
+  navigator.clipboard.writeText(document.getElementById('resultText').textContent);
+  event.target.textContent = '✅ Copied!';
+  setTimeout(() => event.target.textContent = '📋 Copy to Clipboard', 2000);
+}
+
+function sendWhatsApp() {
+  const text = encodeURIComponent(document.getElementById('resultText').textContent);
+  window.open('https://wa.me/?text=' + text);
+}
+</script>
+</body>
+</html>
