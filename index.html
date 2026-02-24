@@ -527,18 +527,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 <div class="item"><input type="checkbox" id="c43_5" onchange="updateCount()"><label for="c43_5">Priority / Emergency Service</label></div>
 </div></div>
 
-<div class="contact-section">
-<h2>📝 Additional Info</h2>
-<select id="volume" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:15px;margin-bottom:12px;background:white;">
-<option value="">Monthly vehicles serviced?</option>
-<option>Under 50</option><option>50-100</option><option>100-200</option><option>200-500</option><option>500+</option>
-</select>
-<select id="software" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:15px;margin-bottom:12px;background:white;">
-<option value="">Current software?</option>
-<option>None / Paper-based</option><option>Excel / Sheets</option><option>Other garage software</option><option>Custom built</option>
-</select>
-<textarea id="notes" placeholder="Any other services or requirements?" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:15px;min-height:80px;resize:vertical;"></textarea>
-</div>
+<!-- additional info removed -->
 
 <div class="submit-area">
 <button class="submit-btn" onclick="submitForm()">Generate Summary</button>
@@ -577,9 +566,9 @@ function updateCount() {
 }
 
 function submitForm() {
-  const volume = document.getElementById('volume').value || '';
-  const software = document.getElementById('software').value || '';
-  const notes = document.getElementById('notes').value || '';
+  const volume = '';
+  const software = '';
+  const notes = '';
 
   let text = `autoGMS — Service Requirements\n`;
   text += `========================\n\n`;
